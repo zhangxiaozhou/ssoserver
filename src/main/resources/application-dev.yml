@@ -1,0 +1,16 @@
+server:
+  port: 1100
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://112.74.172.222:3306/msuser?characterEncoding=utf8&useSSL=false
+    username: root
+    password: yunaxiaozhou1
+    hikari:
+      auto-commit: false
+      maximum-pool-size: 20
+    type: com.zaxxer.hikari.HikariDataSource
+logging:
+  level:
+    root: INFO
