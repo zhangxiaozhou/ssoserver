@@ -11,6 +11,11 @@ spring:
       auto-commit: false
       maximum-pool-size: 20
     type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
 logging:
   level:
     root: INFO

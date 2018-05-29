@@ -1,12 +1,17 @@
 package com.minshenglife.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 客户信息表
@@ -42,7 +47,6 @@ public class User implements UserDetails{
 
     private Date idExpireDateEnd; //证件有效期结束
 
-
     private Date validTime;//帐号有效期
 
     private Date createTime;//创建时间
@@ -53,6 +57,13 @@ public class User implements UserDetails{
 
     private Long frontAttachId; //证件照正面ID
     private Long backAttachId; //证件照反面ID
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "USERS_ROLES",
+            joinColumns = { @JoinColumn(name ="USER_ID")},
+            inverseJoinColumns = { @JoinColumn(name = "ROLE_ID")})
+    private List<Role> roleList;
 
     public User() {
     }
@@ -104,7 +115,14 @@ public class User implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<Role> roleList = this.getRoleList();
+
+        List<GrantedAuthority> authoritiesList = new ArrayList();
+        for(Role role : roleList){
+            authoritiesList.add(new SimpleGrantedAuthority(role.getRoleName()));
+        }
+
+        return authoritiesList;
     }
 
     public String getPassword() {
@@ -227,6 +245,14 @@ public class User implements UserDetails{
         this.backAttachId = backAttachId;
     }
 
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -247,6 +273,7 @@ public class User implements UserDetails{
                 ", upgrade=" + upgrade +
                 ", frontAttachId=" + frontAttachId +
                 ", backAttachId=" + backAttachId +
+                ", roleList=" + roleList +
                 '}';
     }
 }

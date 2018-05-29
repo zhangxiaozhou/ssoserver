@@ -58,13 +58,6 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
-        /*clients.inMemory()
-                .withClient("client")
-                .authorizedGrantTypes("authorization_code","password")
-                .secret("{noop}secret")
-                .scopes("all")
-                .autoApprove(true);*/
-
         clients.jdbc(dataSource).passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 }

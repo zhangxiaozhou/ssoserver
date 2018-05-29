@@ -14,8 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Configuration
@@ -54,15 +54,16 @@ public class SecConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService(){
 
         return new UserDetailsService() {
+
+            @Transactional
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                List<User> byUsername = userRepo.findByUsername(username);
+                List<User> byUsername = userRepo.findByUsername(username.trim());
                 if(byUsername!=null && byUsername.size()>0){
                     User user = byUsername.get(0);
                     return user;
                 }else{
-                    throw new UsernameNotFoundException(SecConfig.this.messageSource.getMessage(
-                            "用户不存在", new Object[]{username}, null));
+                    throw new UsernameNotFoundException("用户不存在");
                 }
             }
         };
@@ -70,14 +71,6 @@ public class SecConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        PasswordEncoder passwordEncoder = NoOpPasswordEncoder.getInstance();
-
-        /*auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder)
-                .withUser("user")
-                .password(passwordEncoder.encode("pass"))
-                .roles("user")
-                .authorities("user");*/
 
         auth.userDetailsService(userDetailsService()).passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
