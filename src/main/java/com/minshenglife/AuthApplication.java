@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  * Hello world!
  *
  */
-//@EnableResourceServer
 @SpringBootApplication
 public class AuthApplication
 {

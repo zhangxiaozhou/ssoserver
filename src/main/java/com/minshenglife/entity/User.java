@@ -115,6 +115,7 @@ public class User implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         List<Role> roleList = this.getRoleList();
 
         List<GrantedAuthority> authoritiesList = new ArrayList();
