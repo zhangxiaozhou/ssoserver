@@ -2,7 +2,6 @@ package com.minshenglife.config;
 
 import com.minshenglife.entity.User;
 import com.minshenglife.repo.UserRepo;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
