@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -22,9 +21,6 @@ public class SecConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private UserRepo userRepo;
-
-    @Resource
-    public MessageSource messageSource;
 
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
@@ -71,6 +67,6 @@ public class SecConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        auth.userDetailsService(userDetailsService()).passwordEncoder(NoOpPasswordEncoder.getInstance());
+        auth.userDetailsService(userDetailsService()).passwordEncoder(new Md5PasswordEncoder());
     }
 }

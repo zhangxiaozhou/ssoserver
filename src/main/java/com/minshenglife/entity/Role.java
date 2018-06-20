@@ -1,6 +1,7 @@
 package com.minshenglife.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.io.Serializable;
@@ -12,8 +13,9 @@ public class Role implements Serializable {
     @Id
     private Long id;
     private String roleName;
+    private String roleDesc;
 
-    @ManyToMany(mappedBy = "roleList")
+    @ManyToMany(mappedBy = "roleList", fetch = FetchType.LAZY)
     List<User> usersList;
 
     public Long getId() {
@@ -40,11 +42,20 @@ public class Role implements Serializable {
         this.usersList = usersList;
     }
 
+    public String getRoleDesc() {
+        return roleDesc;
+    }
+
+    public void setRoleDesc(String roleDesc) {
+        this.roleDesc = roleDesc;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
                 ", roleName='" + roleName + '\'' +
+                ", roleDesc='" + roleDesc + '\'' +
                 ", usersList=" + usersList +
                 '}';
     }
